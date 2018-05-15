@@ -1,16 +1,18 @@
 %global debug_package %{nil}
 
 Name:           wireguard-tools
-Version:        0.0.20161218
+Version:        0.0.20180513
 Release:        1%{?dist}
 Epoch:          1
-URL:            https://www.wireguard.io/
+URL:            https://www.wireguard.com/
 Summary:        Fast, modern, secure VPN tunnel
 License:        GPLv2
 Group:          Applications/Internet
 
 Source0:        https://git.zx2c4.com/WireGuard/snapshot/WireGuard-%{version}.tar.xz
 
+%{?systemd_requires}
+BuildRequires:  systemd
 BuildRequires:  pkgconfig(libmnl)
 
 Provides:       wireguard-tools = %{epoch}:%{version}-%{release}
@@ -31,6 +33,10 @@ This package provides the wg binary for controling WireGuard.
 %setup -q -n WireGuard-%{version}
 
 %build
+## Start DNS Hatchet
+cd %{_builddir}/WireGuard-%{version}/contrib/examples/dns-hatchet
+./apply.sh
+## End DNS Hatchet
 cd %{_builddir}/WireGuard-%{version}/src
 make tools
 
@@ -49,7 +55,12 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root,-)
 %attr(0755, root, root) %{_bindir}/wg
+%attr(0755, root, root) %{_bindir}/wg-quick
+%attr(0644, root, root) %{_datarootdir}/bash-completion/completions/wg
+%attr(0644, root, root) %{_datarootdir}/bash-completion/completions/wg-quick
+%attr(0644, root, root) %{_unitdir}/wg-quick@.service
 %attr(0644, root, root) %{_mandir}/man8/wg.8*
+%attr(0644, root, root) %{_mandir}/man8/wg-quick.8*
 %{_defaultdocdir}/%{name}/examples
 
 %doc README.md
@@ -57,12 +68,3 @@ rm -rf %{buildroot}
 %{!?_licensedir:%global license %doc}
 
 %changelog
-* Mon Dec 19 2016 Jason A. Donenfeld <jason@zx2c4.com> - 0.0.20161218-1
-- Spec adjustments
-
-* Wed Aug 17 2016 Joe Doss <joe@solidadmin.com> - 0.0.20160808-2
-- Spec adjustments
-
-* Mon Aug 15 2016 Joe Doss <joe@solidadmin.com> - 0.0.20160808-1
-- Initial WireGuard Tools RPM
-- Version 0.0.20160808
