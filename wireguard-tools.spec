@@ -34,8 +34,9 @@ This package provides the wg binary for controling WireGuard.
 
 %build
 ## Start DNS Hatchet
-cd %{_builddir}/WireGuard-%{version}/contrib/examples/dns-hatchet
-./apply.sh
+##cd %{_builddir}/WireGuard-%{version}/contrib/examples/dns-hatchet
+##./apply.sh
+## don't care about resolvconf
 ## End DNS Hatchet
 cd %{_builddir}/WireGuard-%{version}/src
 make tools
