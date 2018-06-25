@@ -1,7 +1,11 @@
 %global debug_package %{nil}
 
 Name:           wireguard-tools
+<<<<<<< HEAD
 Version:        0.0.20180625
+=======
+Version:        0.0.20180620
+>>>>>>> 8f33bd3f1d46564dbf7ffdc5ec7a9e67752c34e1
 Release:        1%{?dist}
 Epoch:          1
 URL:            https://www.wireguard.com/
